@@ -1,3 +1,4 @@
+// app/page.tsx
 import { headers } from "next/headers";
 import Link from "next/link";
 import HeaderServer from "@/components/HeaderServer";
@@ -7,9 +8,9 @@ import { getDict } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
-  const hdrLocale = const hdrs = await headers();
-hdrs.get("x-locale");
+export default async function HomePage() {
+  const hdrs = await headers();
+  const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
   const base = locale === "ar" ? "/ar" : "/";
@@ -18,7 +19,6 @@ hdrs.get("x-locale");
     <div className="min-h-dvh flex flex-col overflow-x-hidden">
       <HeaderServer />
 
-      {/* offset for fixed header + keep the scroller LTR so scrollbar stays on the right */}
       <main
         id="main"
         tabIndex={-1}
@@ -49,16 +49,10 @@ hdrs.get("x-locale");
 
             <div className="flex items-center justify-center gap-3 pt-4">
               {/* Token-driven buttons */}
-              <a
-                className="btn"
-                href={dict?.site?.ctaContactHref ?? "#"}
-              >
+              <a className="btn" href={dict?.site?.ctaContactHref ?? "#"}>
                 {dict?.site?.ctaContact}
               </a>
-              <a
-                className="btn-outline"
-                href={dict?.site?.ctaFollowHref ?? "#"}
-              >
+              <a className="btn-outline" href={dict?.site?.ctaFollowHref ?? "#"}>
                 {dict?.site?.ctaFollow}
               </a>
             </div>
