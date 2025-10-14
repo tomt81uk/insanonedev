@@ -1,18 +1,33 @@
 // middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
+  try {
+    const { pathname } = req.nextUrl;
 
-  // Pass locale via header only (no cookies).
-  const requestHeaders = new Headers(req.headers);
-  requestHeaders.set("x-locale", isAr ? "ar" : "en");
+    // infer locale from url prefix
+    const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
+    const locale = isAr ? "ar" : "en";
 
-  return NextResponse.next({ request: { headers: requestHeaders } });
+    // clone request headers and set our hint
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set("x-locale", locale);
+
+    // pass through
+    const res = NextResponse.next({ request: { headers: requestHeaders } });
+
+    // (optional) expose for quick troubleshooting in Response headers
+    res.headers.set("x-locale", locale);
+    return res;
+  } catch (err) {
+    // never throw from middleware—fail open
+    const res = NextResponse.next();
+    res.headers.set("x-middleware-error", (err as Error)?.message ?? "unknown");
+    return res;
+  }
 }
 
+// Run on all pages but skip Next.js internals and static files
 export const config = {
-  matcher: ["/", "/about", "/founder", "/vision", "/ar/:path*"],
+  matcher: ["/((?!_next|api/.*|.*\\..*).*)"],
 };
