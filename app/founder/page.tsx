@@ -15,8 +15,9 @@ type FounderDict = {
   approachTitle?: string; approachBody?: string;
 };
 
-export default function FounderPage() {
-  const hdrLocale = headers().get("x-locale");
+export default async function FounderPage() {
+  const hdrs = await headers();
+  const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
   const t = (dict as any).founder as FounderDict;
@@ -25,7 +26,7 @@ export default function FounderPage() {
     <div className="min-h-dvh flex flex-col overflow-x-hidden">
       <HeaderServer />
 
-      {/* Fixed header spacing + keep the scroller LTR so scrollbar stays on the right */}
+      {/* Keep the scroller LTR so the scrollbar stays on the right */}
       <main
         id="main"
         tabIndex={-1}

@@ -6,8 +6,9 @@ import { getDict } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
-export default function VisionPage() {
-  const hdrLocale = headers().get("x-locale");
+export default async function VisionPage() {
+  const hdrs = await headers();
+  const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
 
@@ -15,7 +16,7 @@ export default function VisionPage() {
     <div className="min-h-dvh flex flex-col overflow-x-hidden">
       <HeaderServer />
 
-      {/* offset for fixed header + keep the scroller LTR so scrollbar stays on the right */}
+      {/* keep the scroller LTR so scrollbar stays on the right */}
       <main
         id="main"
         tabIndex={-1}
