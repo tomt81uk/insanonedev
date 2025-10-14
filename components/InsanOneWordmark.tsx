@@ -19,7 +19,7 @@ export default function InsanOneWordmark({ className = "" }: { className?: strin
       ].join(" ")}
     >
       <span style={{ color: "var(--wordmark-insan)" }}>insan</span>
-      <span style={{ color: "var(--wordmark-one)" }}>ONE</span>
+      <span style={{ color: "var(--wordmark-one)" }}>HRP</span>
     </span>
   );
 }

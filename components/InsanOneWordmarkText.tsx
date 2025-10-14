@@ -13,7 +13,7 @@ function isArabic(text: string) {
 export default function InsanOneWordmarkText({
   text,
   className = "",
-  highlight = /one/i,                    // default highlight "ONE" (latin)
+  highlight = /hrp/i,                    // default highlight "ONE" (latin)
   brandColor = "var(--wordmark-one)",    // 🔄 use token; no hardcoded fallback
 }: {
   text: string;

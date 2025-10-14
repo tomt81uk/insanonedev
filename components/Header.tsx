@@ -11,7 +11,7 @@ export default function Header({
   locale,
   labels,
   onNavigate,
-  siteTitle = "insanHRS",
+  siteTitle = "insanHRP",
 }: {
   locale: Locale;
   labels: Labels;
