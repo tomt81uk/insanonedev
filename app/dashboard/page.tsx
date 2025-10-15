@@ -76,7 +76,7 @@ export default async function DashboardPage() {
       >
         {/* flip only the CONTENT to RTL for Arabic */}
         <div dir={locale === "ar" ? "rtl" : "ltr"}>
-          <div className="mx-auto max-w-7xl px-4 pt-20 md:pt-24 pb-12 text-slate-900">
+          <div className="mx-auto max-w-7xl px-4 pt-14 md:pt-16 pb-12 text-slate-900">
             {/* Heading */}
             <header className="mb-6 md:mb-8">
               <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">Dashboard</h1>
