@@ -15,14 +15,15 @@ function getBasicAuth(req: NextRequest) {
   let decoded = "";
 
   try {
-    // Edge runtime (and many browsers)
-    // @ts-expect-error atob may exist in edge
-    if (typeof atob === "function") {
-      // @ts-expect-error atob may exist in edge
-      decoded = atob(base64);
-    }
-    // Node runtime fallback
-    else if (typeof Buffer !== "undefined") {
+    // Prefer atob if available (Edge runtime / browser-like env)
+    const maybeAtob = (globalThis as any).atob as
+      | ((b64: string) => string)
+      | undefined;
+
+    if (typeof maybeAtob === "function") {
+      decoded = maybeAtob(base64);
+    } else if (typeof Buffer !== "undefined") {
+      // Node.js fallback
       decoded = Buffer.from(base64, "base64").toString("utf8");
     } else {
       return null;
@@ -106,6 +107,9 @@ export const config = {
   matcher: [
     // Marketing / public pages (locale header only)
     "/",
+    "/about",
+    "/founder",
+    "/vision",
     "/ar/:path*",
     "/login",
 
