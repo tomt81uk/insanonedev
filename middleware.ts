@@ -2,12 +2,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// TEMP: hard-coded basic auth credentials so we can verify it works
-// Use EXACTLY these values when the browser prompts:
+// --- TEMP BASIC AUTH CREDS (change whenever you like) ---
 const BASIC_AUTH_USER = "insan";
 const BASIC_AUTH_PASS = "one123";
 
-// Decode "Basic base64(user:pass)" in both Edge & Node runtimes
+// Decode "Basic base64(user:pass)" safely in Edge / Node runtimes
 function getBasicAuth(req: NextRequest) {
   const auth = req.headers.get("authorization");
   if (!auth || !auth.startsWith("Basic ")) return null;
@@ -17,10 +16,12 @@ function getBasicAuth(req: NextRequest) {
 
   try {
     // Edge runtime (and many browsers)
+    // @ts-expect-error atob may exist in edge
     if (typeof atob === "function") {
+      // @ts-expect-error atob may exist in edge
       decoded = atob(base64);
     }
-    // Node runtime fallback (dev/server)
+    // Node runtime fallback
     else if (typeof Buffer !== "undefined") {
       decoded = Buffer.from(base64, "base64").toString("utf8");
     } else {
@@ -43,17 +44,18 @@ export function middleware(req: NextRequest) {
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-locale", isAr ? "ar" : "en");
 
-  // ---------- Decide what to protect ----------
-
-  // Don’t protect login or static/next assets
+  // ---------- Which routes need Basic Auth? ----------
+  // Don’t protect login or obvious public / infra stuff
   const isUnprotected =
     pathname.startsWith("/login") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
-    pathname.startsWith("/public");
+    pathname.startsWith("/public") ||
+    pathname.startsWith("/images") ||
+    pathname.startsWith("/fonts");
 
-  // These are your app/(shell) pages that should be behind the password
+  // These are the “app shell” pages we want behind a password
   const protectedPrefixes = [
     "/landing",
     "/dashboard",
@@ -66,24 +68,27 @@ export function middleware(req: NextRequest) {
     "/myhr",
   ];
 
-  const shouldProtect = protectedPrefixes.some(
-    (prefix) => pathname === prefix || pathname.startsWith(prefix + "/")
-  );
+  const shouldProtect =
+    !isUnprotected &&
+    protectedPrefixes.some(
+      (prefix) => pathname === prefix || pathname.startsWith(prefix + "/")
+    );
 
-  // If route is not protected OR is explicitly unprotected, just pass through
-  if (!shouldProtect || isUnprotected) {
+  // ---------- If not protected, just pass through with locale header ----------
+  if (!shouldProtect) {
     return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
   // ---------- Basic Auth check ----------
   const credentials = getBasicAuth(req);
 
-  if (
-    !credentials ||
-    credentials.user !== BASIC_AUTH_USER ||
-    credentials.pass !== BASIC_AUTH_PASS
-  ) {
-    // Wrong/missing creds → browser shows Basic Auth popup (like .htaccess)
+  const ok =
+    credentials &&
+    credentials.user === BASIC_AUTH_USER &&
+    credentials.pass === BASIC_AUTH_PASS;
+
+  if (!ok) {
+    // Wrong or missing creds → browser shows the Basic Auth popup
     return new NextResponse("Authentication required", {
       status: 401,
       headers: {
@@ -96,16 +101,15 @@ export function middleware(req: NextRequest) {
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-// Make middleware run on all relevant paths
+// Only run middleware where we need locale +/or auth
 export const config = {
   matcher: [
-    "/",              // keep locale header on home
-    "/about",
-    "/founder",
-    "/vision",
+    // Marketing / public pages (locale header only)
+    "/",
     "/ar/:path*",
+    "/login",
 
-    // protected shell pages
+    // Protected shell pages (Basic Auth + locale header)
     "/landing/:path*",
     "/dashboard/:path*",
     "/hr/:path*",
@@ -115,7 +119,5 @@ export const config = {
     "/admin/:path*",
     "/actions/:path*",
     "/myhr/:path*",
-
-    "/login", // still want locale on login but we skip auth inside
   ],
 };
