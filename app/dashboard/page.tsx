@@ -166,8 +166,9 @@ export default async function DashboardPage() {
   };
 
   return (
-    // Match HomePage style: centered section inside the scrollable area
-    <section className="mx-auto max-w-7xl px-4 py-8 md:py-12 content-reset">
+    // ⬅ no more content-reset here
+    <section className="mx-auto max-w-7xl px-4 py-8 md:py-12">
+
       {/* Heading */}
       <header className="mb-6 md:mb-8">
         <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
@@ -184,7 +185,7 @@ export default async function DashboardPage() {
           <Link
             key={m.title}
             href={withBase(m.href)}
-            className="group rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+            className="group rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)]"
           >
             <div className="flex items-start justify-between gap-2">
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
@@ -219,20 +220,20 @@ export default async function DashboardPage() {
 
             <ChevronRight
               className="mt-4 h-5 w-5 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0"
-              aria-hidden
             />
           </Link>
         ))}
       </section>
 
-      {/* Main grid */}
+      {/* Payroll + Approvals */}
       <section className="mt-8 grid gap-4 lg:grid-cols-3">
-        {/* Payroll card */}
+
+        {/* Payroll */}
         <div className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
-                <Banknote className="h-5 w-5" aria-hidden />
+                <Banknote className="h-5 w-5" />
               </span>
               <div>
                 <h2 className="text-lg font-semibold">This Month’s Payroll</h2>
@@ -259,7 +260,6 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Progress */}
           <div className="mt-4">
             <div className="flex justify-between text-xs text-[var(--muted)]">
               <span>Preparation</span>
@@ -275,12 +275,10 @@ export default async function DashboardPage() {
                 <dt className="text-[var(--muted)]">Employees</dt>
                 <dd className="mt-0.5 text-base font-semibold">148</dd>
               </div>
-
               <div className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
                 <dt className="text-[var(--muted)]">Forecast Cost</dt>
                 <dd className="mt-0.5 text-base font-semibold">£612,450</dd>
               </div>
-
               <div className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
                 <dt className="text-[var(--muted)]">Cutoff</dt>
                 <dd className="mt-0.5 text-base font-semibold">in 4 days</dd>
@@ -293,7 +291,7 @@ export default async function DashboardPage() {
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
-              <CheckCircle2 className="h-5 w-5" aria-hidden />
+              <CheckCircle2 className="h-5 w-5" />
             </span>
             <div>
               <h2 className="text-lg font-semibold">Approvals</h2>
@@ -308,7 +306,7 @@ export default async function DashboardPage() {
               <li key={a.id}>
                 <Link
                   href={withBase(a.href)}
-                  className="group flex items-center justify-between gap-3 py-3 focus:outline-none"
+                  className="group flex items-center justify-between gap-3 py-3"
                 >
                   <div className="min-w-0">
                     <p className="text-sm font-medium">{a.what}</p>
@@ -316,7 +314,7 @@ export default async function DashboardPage() {
                       {a.who} • {a.when}
                     </p>
                   </div>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
+                  <ChevronRight className="h-5 w-5 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
                 </Link>
               </li>
             ))}
@@ -341,24 +339,11 @@ export default async function DashboardPage() {
             <li key={q.title} className="h-full">
               <Link
                 href={withBase(q.href)}
-                className="
-                  group block h-full
-                  rounded-2xl border border-[var(--border)]
-                  bg-[var(--background-alt)]
-                  p-5 shadow-sm
-                  transition hover:shadow-md hover:border-[var(--focus)]
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]
-                "
+                className="group block h-full rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)]"
               >
                 <div className="flex items-center gap-3">
-                  <span
-                    className="
-                      inline-flex h-10 w-10 items-center justify-center
-                      rounded-xl border border-[var(--brand)]
-                      text-[var(--brand)] bg-[var(--background)]
-                    "
-                  >
-                    <q.icon className="h-5 w-5" aria-hidden />
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
+                    <q.icon className="h-5 w-5" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="text-base font-semibold">{q.title}</div>
@@ -366,13 +351,7 @@ export default async function DashboardPage() {
                       {q.desc}
                     </div>
                   </div>
-                  <ChevronRight
-                    className="
-                      h-5 w-5 shrink-0 text-[var(--muted)]
-                      opacity-0 -translate-x-1 transition
-                      group-hover:opacity-100 group-hover:translate-x-0
-                    "
-                  />
+                  <ChevronRight className="h-5 w-5 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
                 </div>
               </Link>
             </li>
@@ -382,11 +361,12 @@ export default async function DashboardPage() {
 
       {/* Alerts & Activity */}
       <section className="mt-8 grid gap-4 lg:grid-cols-3">
+
         {/* Alerts */}
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
-              <ShieldAlert className="h-5 w-5" aria-hidden />
+              <ShieldAlert className="h-5 w-5" />
             </span>
             <div>
               <h2 className="text-lg font-semibold">Alerts</h2>
@@ -399,7 +379,7 @@ export default async function DashboardPage() {
               <li key={al.id}>
                 <Link
                   href={withBase(al.href)}
-                  className="block rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--background-alt)]"
+                  className="block rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm hover:bg-[var(--background-alt)]"
                 >
                   {al.text}
                 </Link>
@@ -408,11 +388,11 @@ export default async function DashboardPage() {
           </ul>
         </div>
 
-        {/* Recent activity */}
+        {/* Activity */}
         <div className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
           <div className="flex items-center gap-3">
             <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
-              <FileText className="h-5 w-5" aria-hidden />
+              <FileText className="h-5 w-5" />
             </span>
             <div>
               <h2 className="text-lg font-semibold">Recent Activity</h2>
