@@ -20,9 +20,7 @@
   },
   "nav": {
     "home": "الرئيسية",
-    "about": "نبذة",
-    "founder": "المؤسس",
-    "vision": "الرؤية",
+    "dashboard": "نبذة",
     "openMenu": "افتح قائمة الموقع"
   },
   "about": {

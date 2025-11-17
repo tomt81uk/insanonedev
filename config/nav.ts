@@ -9,7 +9,7 @@ export type Labels = Record<Tab | "openMenu", string>;
 
 export const buildLabels = (locale: Locale, dict?: any): Labels => ({
   home: dict?.nav?.home ?? (locale === "ar" ? "الرئيسية" : "Home"),
-  about: dict?.nav?.about ?? (locale === "ar" ? "حول" : "Dashboard"),
+  dashboard: dict?.nav?.dashboard ?? (locale === "ar" ? "حول" : "Dashboard"),
   openMenu: dict?.nav?.openMenu ?? (locale === "ar" ? "القائمة" : "Menu"),
 });
 
