@@ -167,7 +167,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-dvh flex flex-col bg-[var(--background)] text-[var(--foreground)]">
-      {/* No header – page starts at Dashboard */}
+      {/* No global header – page starts directly at Dashboard */}
 
       <main className="mx-auto max-w-7xl flex-1 px-4 py-8 md:py-12 content-reset">
         {/* Heading */}
@@ -342,15 +342,28 @@ export default async function DashboardPage() {
         {/* Quick Actions */}
         <section className="mt-8">
           <h2 className="mb-3 text-lg font-semibold">Quick Actions</h2>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
             {QUICK.map((q) => (
-              <li key={q.title}>
+              <li key={q.title} className="h-full">
                 <Link
                   href={withBase(q.href)}
-                  className="group block rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
+                  className="
+                    group block h-full
+                    rounded-2xl border border-[var(--border)]
+                    bg-[var(--background-alt)]
+                    p-5 shadow-sm
+                    transition hover:shadow-md hover:border-[var(--focus)]
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+                  "
                 >
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
+                    <span
+                      className="
+                        inline-flex h-10 w-10 items-center justify-center
+                        rounded-xl border border-[var(--brand)]
+                        text-[var(--brand)] bg-[var(--background)]
+                      "
+                    >
                       <q.icon className="h-5 w-5" aria-hidden />
                     </span>
                     <div className="min-w-0 flex-1">
@@ -359,7 +372,13 @@ export default async function DashboardPage() {
                         {q.desc}
                       </div>
                     </div>
-                    <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
+                    <ChevronRight
+                      className="
+                        h-5 w-5 shrink-0 text-[var(--muted)]
+                        opacity-0 -translate-x-1 transition
+                        group-hover:opacity-100 group-hover:translate-x-0
+                      "
+                    />
                   </div>
                 </Link>
               </li>
@@ -401,7 +420,7 @@ export default async function DashboardPage() {
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                 <FileText className="h-5 w-5" aria-hidden />
               </span>
-            <div>
+              <div>
                 <h2 className="text-lg font-semibold">Recent Activity</h2>
                 <p className="text-sm text-[var(--muted)]">
                   Latest changes across the system
