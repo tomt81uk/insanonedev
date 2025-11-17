@@ -1,4 +1,3 @@
-// app/app/dashboard/page.tsx
 import { headers } from "next/headers";
 import Link from "next/link";
 import InsanOneWordmarkText from "@/components/InsanOneWordmarkText";
@@ -155,14 +154,12 @@ const ALERTS = [
 ];
 
 export default async function DashboardPage() {
-  // Match app/page.tsx: locale + dict + base
   const hdrs = await headers();
   const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
   const base = locale === "ar" ? "/ar" : "/";
 
-  // Helper to prefix internal routes with /ar if needed
   const withBase = (href?: string) => {
     if (!href) return "#";
     if (href.startsWith("http")) return href;
@@ -172,27 +169,18 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-dvh bg-slate-50 text-slate-900 flex flex-col">
-      {/* Standard header (aligned with app/page.tsx) */}
+
+      {/* ✔ Standard header (no centered insanPAY) */}
       <header className="border-b border-slate-200 bg-white/80 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 text-center content-reset">
-          <Link
-            href={base}
-            aria-label={
-              dict?.site?.site
-                ? `${dict.site.site} Home`
-                : "insanPAY Home"
-            }
-            className="inline-block no-underline"
-          >
-            <InsanOneWordmarkText
-              text={dict?.site?.site ?? "insanPAY"}
-              className="mx-auto"
-            />
+        <div className="mx-auto max-w-7xl px-4 py-4 content-reset flex items-center gap-4">
+          <Link href={base} aria-label="Home" className="no-underline">
+            <InsanOneWordmarkText text={dict?.site?.site ?? "insanONE"} />
           </Link>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl flex-1 px-4 py-8 md:py-12">
+
         {/* Heading */}
         <header className="mb-6 md:mb-8">
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
@@ -215,6 +203,7 @@ export default async function DashboardPage() {
                 <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
                   <m.icon className="h-5 w-5" aria-hidden />
                 </div>
+
                 <span
                   className={[
                     "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs",
@@ -223,7 +212,7 @@ export default async function DashboardPage() {
                     m.trend === "down" &&
                       "bg-red-50 text-red-700 ring-1 ring-red-200",
                     m.trend === "flat" &&
-                      "bg-slate-50 text-slate-600 ring-1 ring-slate-200",
+                      "bg-slate-50 text-slate-600 ring-slate-200 ring-1",
                   ]
                     .filter(Boolean)
                     .join(" ")}
@@ -237,8 +226,10 @@ export default async function DashboardPage() {
                   {m.sub}
                 </span>
               </div>
+
               <div className="mt-4 text-3xl font-semibold">{m.value}</div>
               <div className="mt-1 text-sm text-slate-600">{m.title}</div>
+
               <ChevronRight
                 className="mt-4 h-5 w-5 text-slate-400 opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0"
                 aria-hidden
@@ -249,7 +240,7 @@ export default async function DashboardPage() {
 
         {/* Main grid */}
         <section className="mt-8 grid gap-4 lg:grid-cols-3">
-          {/* Payroll card (span 2) */}
+          {/* Payroll */}
           <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -264,6 +255,7 @@ export default async function DashboardPage() {
                   </p>
                 </div>
               </div>
+
               <div className="flex items-center gap-2">
                 <Link
                   href={withBase("/app/payroll")}
@@ -280,24 +272,27 @@ export default async function DashboardPage() {
               </div>
             </div>
 
-            {/* Progress */}
             <div className="mt-4">
               <div className="flex justify-between text-xs text-slate-600">
                 <span>Preparation</span>
                 <span>68%</span>
               </div>
+
               <div className="mt-1 h-2 w-full rounded-full bg-slate-200">
                 <div className="h-2 w-[68%] rounded-full bg-[#335784]" />
               </div>
+
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
                 <div className="rounded-lg border border-slate-200 p-3">
                   <dt className="text-slate-600">Employees</dt>
                   <dd className="mt-0.5 text-base font-semibold">148</dd>
                 </div>
+
                 <div className="rounded-lg border border-slate-200 p-3">
                   <dt className="text-slate-600">Forecast Cost</dt>
                   <dd className="mt-0.5 text-base font-semibold">£612,450</dd>
                 </div>
+
                 <div className="rounded-lg border border-slate-200 p-3">
                   <dt className="text-slate-600">Cutoff</dt>
                   <dd className="mt-0.5 text-base font-semibold">in 4 days</dd>
@@ -350,7 +345,7 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        {/* Quick actions */}
+        {/* Quick Actions */}
         <section className="mt-8">
           <h2 className="mb-3 text-lg font-semibold">Quick Actions</h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -378,7 +373,7 @@ export default async function DashboardPage() {
           </ul>
         </section>
 
-        {/* Alerts & Activity */}
+        {/* Alerts + Activity */}
         <section className="mt-8 grid gap-4 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-3">
@@ -426,6 +421,7 @@ export default async function DashboardPage() {
                 </span>
                 <span className="text-slate-500">10:24</span>
               </li>
+
               <li className="flex items-center justify-between py-3">
                 <span>
                   <span className="font-medium">Bank change</span> submitted by
@@ -433,6 +429,7 @@ export default async function DashboardPage() {
                 </span>
                 <span className="text-slate-500">09:40</span>
               </li>
+
               <li className="flex items-center justify-between py-3">
                 <span>
                   <span className="font-medium">Leave approved</span> for Zara
@@ -440,6 +437,7 @@ export default async function DashboardPage() {
                 </span>
                 <span className="text-slate-500">Yesterday</span>
               </li>
+
               <li className="flex items-center justify-between py-3">
                 <span>
                   <span className="font-medium">Contract issued</span> to Maya
@@ -450,14 +448,6 @@ export default async function DashboardPage() {
             </ul>
           </div>
         </section>
-
-        {/* Standard footer (same wording as other pages) */}
-        <div className="mt-12 text-center">
-          <p className="text-sm font-medium">Human. Innovation. Simplicity.</p>
-          <p className="mt-1 text-xs text-slate-600">
-            © 2025 insanONE. No unauthorised access.
-          </p>
-        </div>
       </main>
     </div>
   );
