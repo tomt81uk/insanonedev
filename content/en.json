@@ -1,14 +1,14 @@
 {
   "site": {
- "title": "insanPAY",
-  "subtitle": "insan Payroll Bureau Services, powered by insanONE",
-  "description": "Managed payroll done right — compliant, consistent, and powered by insanONE. insanPAY delivers accurate, compliant payroll bureau services using the full insanONE platform, giving every organisation enterprise-level payroll without enterprise-level cost or complexity.",
-    "tagline1": "One Bureau. One Standard. One Outcome.",
-    "tagline2": "Managed payroll done right — compliant, consistent, and powered by insanONE.",
+  "title": "insanONE",
+  "subtitle": "The insan HR & Payroll Platform",
+  "description": "The next-generation HR and Payroll platform — built for clarity, consistency, and insight. insanONE combines intelligent automation, accessible design, and practical AI validation to give every organisation a single, reliable source of truth for their people and pay.",
+    "tagline1": "One Platform. One Workforce. One Future.",
+    "tagline2": "The next generation HR & Payroll platform — built for clarity, speed, and trust from day one.",
     "ctaContact": "Contact Us",
     "ctaFollow": "Follow Updates",
-    "footer1": "Accuracy. Compliance. Trust.",
-    "footer2": "© 2025 insanPAY. All rights reserved.",
+    "footer1": "Human. Innovation. Simplicity.",
+    "footer2": "© 2025 insanONE. All rights reserved.",
     "cookie": {
       "title": "Cookies",
       "message": "We use only essential cookies for basic site functions. No tracking, analytics, or ads. You can accept or reject — either way, the site will still work.",
@@ -23,20 +23,22 @@
     "vision": "Vision",
     "openMenu": "Open site menu"
   },
-  "payAbout": {
-    "h1": "About insanPAY",
-    "intro": "A payroll bureau for startups, SMEs, and growing organisations — compliant, consistent, and powered by insanONE.",
-    "whoTitle": "Who we are",
-    "whoBody": "insanPAY is a managed payroll service built on the insanONE platform. We make enterprise-level accuracy accessible without enterprise-level complexity or cost.",
-    "executionTitle": "What we do",
-    "executionBody": "We deliver fully managed and semi-managed payroll using the same single, governed data model as insanONE. Calculations, controls, and reports follow one clear standard — accurate, explainable, and audit-ready. Clients get compliant payroll and real-time insight without buying or maintaining software.",
-    "usabilityTitle": "Built to scale, not replace",
-    "usabilityBody": "As you grow, the service grows with you — from insanPAY (outsourced bureau) to insanHRS (fully managed HR & payroll) and, when the time is right, to running insanONE directly. No migrations, no platform change, no disruption — just a shift in who does what.",
-    "valuesTitle": "What we value",
-    "valuesList": [
-      "Accuracy — every calculation verified and explainable.",
-      "Compliance — embedded controls and complete auditability.",
-      "Trust — transparent processes and consistent outcomes."
-    ]
-  }
+"about": {
+  "h1": "About insanONE",
+  "intro": "An emerging team with plans to establish insanONE in Abu Dhabi — creating a clear, intelligent HR and payroll platform for modern organisations. We aim to keep complexity out and confidence in.",
+  "whoTitle": "Who we are",
+  "whoBody": "insanONE will be developed to make the management of people and pay straightforward again. Built specifically for the UAE, it will reflect local labour law, language, and reporting requirements from the outset — with a data model and architecture designed to support future growth across the wider GCC once established.",
+  "executionTitle": "How we’ll build it",
+  "executionBody": "The platform will connect HR, payroll, and compliance through a single, structured data model that delivers reliable information without extra steps or external dependencies. The emphasis will be on output: information that is complete, consistent, and ready to use. Rather than adding endless configuration options, insanONE will apply strong defaults and clear guidance so every organisation works from the same foundation. Data will be validated automatically as it’s entered, reducing errors and the cost of correction. Reports and metrics will be available instantly — no rebuilds, no specialist queries, no waiting for consultants.",
+  "usabilityTitle": "Familiar and inclusive by design",
+  "usabilityBody": "insanONE is planned to feel familiar from the first click. For too long, HR and payroll systems have expected users to master huge manuals and extensive training just to perform everyday tasks. insanONE will apply the same design logic people already trust in daily life — clear navigation, predictable actions, and feedback that makes sense. HR and payroll teams will still benefit from detailed training, but the system itself will be intuitive and largely self-explanatory. The platform will be bilingual in English and Arabic and built to modern accessibility standards. Its interface will be simple, responsive, and inclusive, supporting every user — whether in HR, finance, or leadership — to find what they need quickly and confidently.",
+  "geoTitle": "UAE first → GCC next",
+  "geoBody": "insanONE will be built for the UAE from the outset — labour law, language, and reporting. Once established and proven, the architecture is intended to support expansion across the wider GCC with the same clarity and consistency.",
+  "valuesTitle": "What we value",
+  "valuesList": [
+    "Human — respectful, helpful experiences for everyone.",
+    "Innovation — intelligent, practical, and secure by design.",
+    "Simplicity — strong defaults and clear guidance that remove uncertainty."
+  ]
+}
 }
