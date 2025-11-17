@@ -4,36 +4,44 @@
 :root {
   --font-scale: 1;
 
-  --background: #FAFAF9;
-  --background-alt: #F3F4F6;
+  /* Softer light mode */
+  --background: #F4F4F5;      /* soft gray */
+  --background-alt: #EDEDED;  /* subtle contrast */
 
-  --foreground: #171717;
-  --muted: #4a4a4a;
-  --border: #e5e7eb;
+  --foreground: #1F2937;      /* slate-800 */
+  --muted: #52525B;           /* zinc-600 */
+  --border: #E5E7EB;          /* gray-200 */
 
-  --brand: #1d4ed8;
-  --brand-strong: #1e40af;
-  --focus: #1e40af;
+  /* === Brand Palette (Blue theme) === */
+  --brand: #1d4ed8;           /* blue-700 */
+  --brand-strong: #1e40af;    /* blue-800 */
+  --focus: #2563eb;           /* blue-600 */
 
-  --on-background: #171717;
-  --on-background-alt: #171717;
+  --on-background: #1F2937;
+  --on-background-alt: #1F2937;
   --on-brand: #ffffff;
   --on-brand-strong: #ffffff;
 
   --link: var(--brand);
-  --link-hover: var(--brand-strong);
+  --link-hover: var(--focus);
 
-  --wordmark-insan: #000000;
+  --wordmark-insan: #0B0B0C;
   --wordmark-one: var(--brand);
 
+  /* Cookie consent colors */
   --cookie-bg: var(--background);
   --cookie-fg: var(--foreground);
   --cookie-border: var(--border);
   --cookie-hover: var(--background-alt);
   --cookie-cta-bg: var(--brand);
-  --cookie-cta-fg: var(--on-brand);
+  --cookie-cta-fg: #ffffff; /* always white text */
+
+  /* Layout sizing */
+  --header-h: 56px;
+  --footer-h: 64px;
 }
 
+/* ===== Dark Mode ===== */
 .dark {
   --background: #0a0a0a;
   --background-alt: #111214;
@@ -41,22 +49,28 @@
   --muted: #bdbdbd;
   --border: #374151;
 
+  /* Brighter blues for contrast */
+  --brand: #3b82f6;           /* blue-500 */
+  --brand-strong: #2563eb;    /* blue-600 */
+  --focus: #60a5fa;           /* blue-400 */
+
   --on-background: #ededed;
   --on-background-alt: #ededed;
-
   --on-brand: #ffffff;
   --on-brand-strong: #ffffff;
 
   --wordmark-insan: #ffffff;
+  --wordmark-one: var(--brand);
 
   --cookie-bg: #0f0f10;
   --cookie-fg: #ededed;
   --cookie-border: #374151;
   --cookie-hover: #1a1a1b;
   --cookie-cta-bg: var(--brand);
-  --cookie-cta-fg: var(--on-brand);
+  --cookie-cta-fg: #ffffff;
 }
 
+/* ===== High Contrast Mode ===== */
 .hc {
   --background: #000000;
   --background-alt: #000000;
@@ -83,43 +97,43 @@
   --cookie-cta-fg: #000000;
 }
 
-/* Base */
-* { box-sizing: border-box; }
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
 html, body, :root {
   height: 100%;
+  min-height: 100%;
   background: var(--background);
   color: var(--on-background);
   font-size: 16px;
 }
 
-/* ---------- Content scroller pattern ---------- */
-/* Viewport no longer scrolls; only #app-scroll does */
-html, body { overflow: hidden; }
+body {
+  min-height: 100dvh;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 
-/* Keep the scrollbar on the RIGHT no matter the page language */
-#app-scroll {
-  height: 100dvh;
+#page-scroll {
+  height: calc(100dvh - var(--header-h,56px) - var(--footer-h,64px));
   overflow-y: auto;
   overflow-x: hidden;
-  direction: ltr;                      /* 👈 force scroller LTR so scrollbar stays right */
-  scrollbar-gutter: stable both-edges; /* stable gutter */
-  padding-top: 0px;                   /* equals header height (h-14) */
+  direction: ltr;
+  scrollbar-gutter: stable both-edges;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* If you also use a wrapper with min-h-dvh (as you do), keep it non-scrolling */
-#app { overflow: hidden; }
+header { block-size: var(--header-h, 56px); }
+footer { block-size: var(--footer-h, 64px); }
+main { overflow-x: clip; }
 
-/* Pages used to add pt-14 to make room for fixed header.
-   Now #app-scroll provides the spacing, so kill any leftover page padding. */
-main { 
-  overflow-x: clip; 
-  padding-top: 0 !important;          /* 👈 prevents the “double height” look */
-}
-
-/* A11y */
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
 .skip-link {
-  position: fixed; z-index: 100; 
+  position: fixed; z-index: 100;
   left: -9999px; top: 8px; width: 1px; height: 1px; overflow: hidden;
 }
 .skip-link:focus {
@@ -128,10 +142,9 @@ main {
   border: 2px solid var(--focus); border-radius: .5rem;
 }
 
-/* Scale only page content (header fixed height unaffected) */
-main, footer { font-size: calc(16px * var(--font-scale)); }
+#page-scroll, main, footer { font-size: calc(16px * var(--font-scale)); }
 
-/* --- Content reset (SCOPED) --- */
+/* ===== Utilities ===== */
 @layer utilities {
   .content-reset p,
   .content-reset ul,
@@ -139,28 +152,49 @@ main, footer { font-size: calc(16px * var(--font-scale)); }
   .content-reset li,
   .content-reset h1,
   .content-reset h2,
-  .content-reset h3 {
+  .content-reset h3,
+  .content-reset h4,
+  .content-reset h5,
+  .content-reset h6 {
     display: revert;
-    visibility: visible;
     color: inherit;
-    text-indent: 0;
     margin-block-start: 0;
     margin-block-end: 0;
     padding: 0;
   }
+
   .content-reset p + p { margin-top: 1rem; }
-  .content-reset ul, .content-reset ol {
+
+  .content-reset ul,
+  .content-reset ol {
     list-style-position: outside;
     margin-block: 0.75rem;
     padding-inline-start: 1.5rem;
   }
-  [dir="rtl"] .content-reset ul, [dir="rtl"] .content-reset ol {
+
+  [dir="rtl"] .content-reset ul,
+  [dir="rtl"] .content-reset ol {
     padding-inline-start: 0;
     padding-inline-end: 1.5rem;
   }
+
   .content-reset li { margin-block: 0.25rem; }
 
-  /* ---------- Helpers using the new tokens ---------- */
+  /* Exclude buttons from link reset */
+  .content-reset a:not(.btn):not(.btn-outline) {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .content-reset a:not(.btn):not(.btn-outline):hover {
+    color: var(--link-hover);
+  }
+
+  /* Buttons inside content should not get link underline */
+  .content-reset a.btn,
+  .content-reset a.btn-outline {
+    text-decoration: none;
+  }
 
   /* Buttons */
   .btn {
@@ -192,11 +226,9 @@ main, footer { font-size: calc(16px * var(--font-scale)); }
   /* Surfaces */
   .surface       { background: var(--background);     color: var(--on-background); }
   .surface-alt   { background: var(--background-alt); color: var(--on-background-alt); }
-
-  /* Brand surfaces (cards/badges) */
   .surface-brand        { background: var(--brand);        color: var(--on-brand); }
   .surface-brand-strong { background: var(--brand-strong); color: var(--on-brand-strong); }
 }
 
-/* Media */
+/* ===== Media ===== */
 img, svg { max-width: 100%; height: auto; display: block; }

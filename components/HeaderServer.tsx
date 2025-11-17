@@ -1,4 +1,3 @@
-// components/HeaderServer.tsx
 import { headers } from "next/headers";
 import { getDict } from "@/lib/i18n";
 import HeaderNavAdapter from "@/components/HeaderNavAdapter";
@@ -11,6 +10,13 @@ export default async function HeaderServer() {
 
   const dict: any = getDict(locale);
   const labels = buildLabels(locale, dict);
+  const siteTitle = dict?.site?.title ?? "insanONE";
 
-  return <HeaderNavAdapter locale={locale} labels={labels} />;
+  return (
+    <HeaderNavAdapter
+      locale={locale}
+      labels={labels}
+      siteTitle={siteTitle}
+    />
+  );
 }

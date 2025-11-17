@@ -11,7 +11,7 @@ export default function Header({
   locale,
   labels,
   onNavigate,
-  siteTitle = "insanHRP",
+  siteTitle = "insanONE",
 }: {
   locale: Locale;
   labels: Labels;
@@ -28,7 +28,9 @@ export default function Header({
   const homeHref = isArPath ? "/ar" : "/";
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     const onClick = (e: MouseEvent) => {
       if (!menuRef.current || !btnRef.current) return;
       const t = e.target as Node;
@@ -43,21 +45,25 @@ export default function Header({
   }, []);
 
   const isCurrent = (href: string) => pathname === href;
-
   const hrefForTab = (tab: Tab) => (tab === "home" ? homeHref : `${base}/${tab}`);
 
   return (
     <header
+      role="banner"
       dir="ltr"
-      className="sticky top-0 z-50 h-14 border-b border-[var(--border)]
-                 bg-[color:var(--background)]/90 backdrop-blur
-                 supports-[backdrop-filter]:bg-[color:var(--background)]/70 shadow-sm"
+      // Expose header height for layout calc: --header-h (match CSS default if you change h-14)
+      style={{ ["--header-h" as any]: "56px" }}
+      className="h-14 border-b border-[var(--border)] bg-[color:var(--background)]/90
+                 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/70
+                 shadow-sm"
     >
       <a href="#main" className="skip-link">Skip to main content</a>
 
       <div className="mx-auto max-w-5xl h-full px-4 flex items-center justify-between">
         <Link href={homeHref} className="flex items-center gap-2 no-underline">
-          <span aria-hidden="true"><InsanOneWordmark className="text-2xl" /></span>
+          <span aria-hidden="true">
+            <InsanOneWordmark className="text-2xl" />
+          </span>
           <span className="sr-only">{siteTitle} Home</span>
         </Link>
 
@@ -66,7 +72,7 @@ export default function Header({
             ref={btnRef}
             type="button"
             className="btn-outline px-3 py-2"
-            onClick={() => setOpen(v => !v)}
+            onClick={() => setOpen((v) => !v)}
             aria-haspopup="true"
             aria-expanded={open}
             aria-controls="primary-menu"
@@ -81,7 +87,8 @@ export default function Header({
               id="primary-menu"
               className="absolute right-0 top-[calc(100%+0.5rem)] w-72 rounded-xl border border-[var(--border)]
                          bg-[var(--background)] shadow-lg p-3 space-y-3"
-              role="dialog" aria-label="Site menu"
+              role="dialog"
+              aria-label="Site menu"
             >
               <nav aria-label="Primary">
                 <ul className="space-y-1">
@@ -93,7 +100,10 @@ export default function Header({
                       <li key={href}>
                         <Link
                           href={href}
-                          onClick={() => { onNavigate?.(tab); setOpen(false); }}
+                          onClick={() => {
+                            onNavigate?.(tab);
+                            setOpen(false);
+                          }}
                           aria-current={current ? "page" : undefined}
                           className={[
                             "block w-full text-left px-3 py-2 rounded relative transition-colors",
@@ -104,8 +114,10 @@ export default function Header({
                           ].join(" ")}
                         >
                           {current && (
-                            <span aria-hidden="true"
-                              className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--brand)] rounded-r" />
+                            <span
+                              aria-hidden="true"
+                              className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--brand)] rounded-r"
+                            />
                           )}
                           {label}
                         </Link>
@@ -118,13 +130,20 @@ export default function Header({
               <div className="h-px w-full bg-[var(--border)]" aria-hidden="true" />
 
               <section aria-labelledby="prefs-heading">
-                <div id="prefs-heading" className="text-xs mb-1 text-[var(--muted)]">Preferences</div>
+                <div id="prefs-heading" className="text-xs mb-1 text-[var(--muted)]">
+                  Preferences
+                </div>
                 <ThemeControls />
               </section>
 
               <section aria-labelledby="lang-heading">
-                <div id="lang-heading" className="text-xs mb-1 text-[var(--muted)]">Language</div>
-                <LangSwitcher locale={isArPath ? "ar" : "en"} onSwitched={() => setOpen(false)} />
+                <div id="lang-heading" className="text-xs mb-1 text-[var(--muted)]">
+                  Language
+                </div>
+                <LangSwitcher
+                  locale={isArPath ? "ar" : "en"}
+                  onSwitched={() => setOpen(false)}
+                />
               </section>
             </div>
           )}
@@ -133,4 +152,3 @@ export default function Header({
     </header>
   );
 }
-//

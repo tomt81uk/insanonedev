@@ -1,12 +1,14 @@
 {
   "site": {
-    "title": "insanONE",
-    "tagline1": "One Platform. One Workforce. One Future.",
-    "tagline2": "The next generation HR & Payroll platform — built for clarity, speed, and trust from day one.",
+ "title": "insanPAY",
+  "subtitle": "insan Payroll Bureau Services, powered by insanONE",
+  "description": "Managed payroll done right — compliant, consistent, and powered by insanONE. insanPAY delivers accurate, compliant payroll bureau services using the full insanONE platform, giving every organisation enterprise-level payroll without enterprise-level cost or complexity.",
+    "tagline1": "One Bureau. One Standard. One Outcome.",
+    "tagline2": "Managed payroll done right — compliant, consistent, and powered by insanONE.",
     "ctaContact": "Contact Us",
     "ctaFollow": "Follow Updates",
-    "footer1": "Human. Innovation. Simplicity.",
-    "footer2": "© 2025 insanONE. All rights reserved.",
+    "footer1": "Accuracy. Compliance. Trust.",
+    "footer2": "© 2025 insanPAY. All rights reserved.",
     "cookie": {
       "title": "Cookies",
       "message": "We use only essential cookies for basic site functions. No tracking, analytics, or ads. You can accept or reject — either way, the site will still work.",
@@ -21,53 +23,20 @@
     "vision": "Vision",
     "openMenu": "Open site menu"
   },
-  "about": {
-    "h1": "About insanONE",
-    "intro": "We’re building insanONE to make HR & payroll simple, trustworthy, and built for people.",
+  "payAbout": {
+    "h1": "About insanPAY",
+    "intro": "A payroll bureau for startups, SMEs, and growing organisations — compliant, consistent, and powered by insanONE.",
     "whoTitle": "Who we are",
-    "whoBody": "A focused team building a clear HR & Payroll platform for modern organisations. We keep complexity out and confidence in.",
+    "whoBody": "insanPAY is a managed payroll service built on the insanONE platform. We make enterprise-level accuracy accessible without enterprise-level complexity or cost.",
+    "executionTitle": "What we do",
+    "executionBody": "We deliver fully managed and semi-managed payroll using the same single, governed data model as insanONE. Calculations, controls, and reports follow one clear standard — accurate, explainable, and audit-ready. Clients get compliant payroll and real-time insight without buying or maintaining software.",
+    "usabilityTitle": "Built to scale, not replace",
+    "usabilityBody": "As you grow, the service grows with you — from insanPAY (outsourced bureau) to insanHRS (fully managed HR & payroll) and, when the time is right, to running insanONE directly. No migrations, no platform change, no disruption — just a shift in who does what.",
     "valuesTitle": "What we value",
     "valuesList": [
-      "Human — respectful, helpful experiences for everyone.",
-      "Innovation — practical, secure, and scalable decisions.",
-      "Simplicity — strong defaults and clear guidance."
+      "Accuracy — every calculation verified and explainable.",
+      "Compliance — embedded controls and complete auditability.",
+      "Trust — transparent processes and consistent outcomes."
     ]
-  },
-  "founder": {
-    "h1": "Founder",
-    "intro": "Meet the person behind insanONE",
-    "nameTitle": "Tom Hutchison — Founder",
-    "bio": "Nearly two decades building and modernising HR, payroll, and workforce solutions across complex public and private organisations.",
-    "aboutTitle": "About Tom",
-    "aboutBody": "Tom founded insanONE after years of seeing complicated systems slow teams down and make reporting and compliance harder than they need to be. He combines deep HRIS/payroll expertise with a plain-English style that brings clarity from boardroom to frontline.",
-    "expTitle": "Experience at a glance",
-    "expBullets": [
-      "Led programmes for organisations from 2,000 to 80,000+ employees",
-      "Public & private sector delivery: government, healthcare, education, retail, and services",
-      "End-to-end projects: strategy, selection, design, implementation, and change"
-    ],
-    "expertiseTitle": "Areas of expertise",
-    "expertiseBullets": [
-      "HRIS & payroll modernisation and migration",
-      "Payroll controls and compliance",
-      "Operating models: time, leave, scheduling, and approvals",
-      "Reporting & data governance: from payslip accuracy to leadership dashboards"
-    ],
-    "approachTitle": "Approach",
-    "approachBody": "Practical, outcome-first, and people-centred. Tom’s aim is software that is clear, compliant, and trusted from the first payslip."
-  },
-  "vision": {
-    "h1": "Our Vision for insanONE",
-    "intro": "We believe HR and payroll should be simple, trustworthy, and built for people.",
-    "problemTitle": "The Problem We See",
-    "problem": "Most HR systems are too complex, too costly, and too confusing. Reporting is an afterthought. Compliance feels risky. Employees and managers deserve better.",
-    "approachTitle": "Our Approach",
-    "approach": "We will build an HR & Payroll platform with strong defaults and clear guidance. Payroll that works first time, compliance that is built in, and reporting that’s ready when you need it.",
-    "uaeTitle": "UAE First → GCC Next",
-    "uae": "We are starting in the UAE, focusing on labour law, WPS, Emiratisation, and public holidays. Once that foundation is proven, we will expand across the GCC with the same clear and reliable approach.",
-    "aiTitle": "AI at the Core",
-    "ai": "AI will guide every step — from checking compliance in real time to answering questions in plain language. It will help people work faster and with more confidence, while keeping every decision clear and auditable.",
-    "uxTitle": "Clear and Accessible Experience",
-    "ux": "We will keep insanONE clean and easy to use: no clutter, consistent design, mobile-first, and accessible to everyone. English and Arabic will both be supported from day one."
   }
 }

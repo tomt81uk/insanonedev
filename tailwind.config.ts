@@ -2,7 +2,7 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
-/** simple YIQ contrast check (no deps) */
+/** Simple YIQ contrast check (no deps) */
 function onColorFor(hex: string) {
   const h = (hex || "#000000").replace("#", "");
   const r = parseInt(h.substring(0, 2), 16) || 0;
@@ -18,10 +18,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Keep these in sync with your CSS vars in globals.css
+        // === Emerald theme (keep synced with globals.css) ===
         brand: {
-          DEFAULT: "#1d4ed8", // Blue 700
-          strong: "#1e40af",  // Blue 800
+          DEFAULT: "#047857", // Emerald 700
+          strong: "#065f46",  // Emerald 800
         },
       },
     },
@@ -29,23 +29,23 @@ export default {
   plugins: [
     plugin(({ addBase, addUtilities, theme }) => {
       // Compute readable text colors for brand at build time (fallbacks)
-      const brand = (theme("colors.brand.DEFAULT") as string) || "#1d4ed8";
-      const brandStrong = (theme("colors.brand.strong") as string) || "#1e40af";
+      const brand = (theme("colors.brand.DEFAULT") as string) || "#047857";
+      const brandStrong = (theme("colors.brand.strong") as string) || "#065f46";
 
       const onBrand = onColorFor(brand);
       const onBrandStrong = onColorFor(brandStrong);
 
-      // Fallbacks only — your globals.css still sets the real tokens
+      // Fallbacks only — real values come from globals.css
       addBase({
         ":root": {
           "--on-brand": onBrand,
           "--on-brand-strong": onBrandStrong,
           "--link": "var(--brand)",
-          "--link-hover": "var(--brand-strong)",
+          "--link-hover": "var(--focus, #10b981)", // Emerald 500 as hover/focus
         },
       });
 
-      // Optional utility shorthands (mirror your CSS utilities)
+      // Utility shorthands (mirror your CSS utilities)
       addUtilities({
         /* Brand backgrounds + readable text */
         ".bg-brand":             { backgroundColor: "var(--brand)" },
@@ -67,6 +67,7 @@ export default {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
+          transition: "background-color 0.2s ease, color 0.2s ease",
         },
         ".btn-brand:hover":      { backgroundColor: "var(--brand-strong)" },
 
@@ -79,6 +80,7 @@ export default {
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
+          transition: "background-color 0.2s ease, color 0.2s ease",
         },
         ".btn-outline:hover":    { backgroundColor: "var(--background-alt)" },
 
@@ -87,6 +89,7 @@ export default {
           color: "var(--link)",
           textDecoration: "underline",
           textUnderlineOffset: "2px",
+          transition: "color 0.2s ease",
         },
         ".link-token:hover":     { color: "var(--link-hover)" },
       });

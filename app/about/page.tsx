@@ -1,103 +1,62 @@
-// app/about/page.tsx
+// app/insanpay/about/page.tsx
 import { headers } from "next/headers";
-import HeaderServer from "@/components/HeaderServer";
-import Footer from "@/components/Footer";
 import { getDict } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
-export default async function AboutPage() {
+export default async function InsanPayAboutPage() {
   const hdrs = await headers();
   const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
+  const about = dict?.payAbout ?? {};
 
   return (
-    <div className="min-h-dvh flex flex-col overflow-x-hidden">
-      <HeaderServer />
+    <section
+      className="mx-auto max-w-5xl px-4 py-16 content-reset grid grid-cols-1 gap-y-8 [&_h1]:m-0 [&_h2]:m-0 [&_p]:m-0"
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      lang={locale}
+    >
+      <div className="grid gap-y-2">
+        <h1 className="text-[calc(var(--font-scale)*2.25rem)] font-semibold">
+          {about.h1}
+        </h1>
+        <p className="text-[calc(var(--font-scale)*1rem)] text-[var(--muted)]">
+          {about.intro}
+        </p>
+      </div>
 
-      {/* keep the scroller LTR so scrollbar stays on the right */}
-      <main
-        id="main"
-        tabIndex={-1}
-        className="flex-1"
-        style={{ direction: "ltr", overflowX: "clip" }}
-      >
-        {/* flip only the CONTENT to RTL for Arabic */}
-        <div dir={locale === "ar" ? "rtl" : "ltr"}>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-                .content-reset p, .content-reset ul, .content-reset ol, .content-reset li,
-                .content-reset h1, .content-reset h2, .content-reset h3 {
-                  display: revert !important;
-                  visibility: visible !important;
-                  text-indent: 0 !important;
-                  margin-block-start: 0;
-                  margin-block-end: 0;
-                  padding: 0;
-                }
-                .content-reset p + p { margin-top: 1rem; }
-                .content-reset ul, .content-reset ol {
-                  margin-block: 0.75rem !important;
-                  padding-inline-start: 1.5rem !important;
-                  list-style-position: outside !important;
-                }
-                [dir="rtl"] .content-reset ul, [dir="rtl"] .content-reset ol {
-                  padding-inline-start: 0 !important;
-                  padding-inline-end: 1.5rem !important;
-                }
-                .content-reset li { margin-block: 0.25rem; }
+      <section aria-labelledby="pay-who" className="grid gap-y-2">
+        <h2 id="pay-who" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
+          {about.whoTitle}
+        </h2>
+        <p>{about.whoBody}</p>
+      </section>
 
-                /* Token-driven links inside content */
-                .content-reset a {
-                  color: var(--link);
-                  text-decoration: underline;
-                  text-underline-offset: 2px;
-                }
-                .content-reset a:hover { color: var(--link-hover); }
-              `,
-            }}
-          />
+      <section aria-labelledby="pay-execution" className="grid gap-y-2">
+        <h2 id="pay-execution" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
+          {about.executionTitle}
+        </h2>
+        <p>{about.executionBody}</p>
+      </section>
 
-          <section className="mx-auto max-w-5xl px-4 py-16 space-y-6 content-reset">
-            <h1 className="text-[calc(var(--font-scale)*2.25rem)] font-semibold">
-              {dict?.about?.h1}
-            </h1>
+      <section aria-labelledby="pay-scale" className="grid gap-y-2">
+        <h2 id="pay-scale" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
+          {about.usabilityTitle}
+        </h2>
+        <p>{about.usabilityBody}</p>
+      </section>
 
-            {/* intro */}
-            <p className="text-[calc(var(--font-scale)*1rem)] text-[var(--muted)]">
-              {dict?.about?.intro}
-            </p>
-
-            {/* who we are */}
-            <section aria-labelledby="about-who">
-              <h2 id="about-who" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
-                {dict?.about?.whoTitle}
-              </h2>
-              <p className="mt-2">{dict?.about?.whoBody}</p>
-            </section>
-
-            {/* values */}
-            <section aria-labelledby="about-values">
-              <h2 id="about-values" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
-                {dict?.about?.valuesTitle}
-              </h2>
-              <ul className="list-disc ps-6 mt-2 space-y-1">
-                {(dict?.about?.valuesList ?? []).map((item: string, i: number) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          </section>
-        </div>
-      </main>
-
-      <Footer
-        footer1={dict?.site?.footer1}
-        footer2={dict?.site?.footer2}
-        siteTitle={dict?.site?.title}
-      />
-    </div>
+      <section aria-labelledby="pay-values" className="grid gap-y-2">
+        <h2 id="pay-values" className="text-[calc(var(--font-scale)*1.25rem)] font-semibold">
+          {about.valuesTitle}
+        </h2>
+        <ul className="list-disc ps-6 space-y-1">
+          {(about.valuesList ?? []).map((item: string, i: number) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      </section>
+    </section>
   );
 }
