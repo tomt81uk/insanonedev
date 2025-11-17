@@ -2,35 +2,50 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const BASIC_AUTH_USER = process.env.BASIC_AUTH_USER;
-const BASIC_AUTH_PASS = process.env.BASIC_AUTH_PASS;
+// TEMP: hard-coded basic auth credentials so we can verify it works
+// Use EXACTLY these values when the browser prompts:
+const BASIC_AUTH_USER = "insan";
+const BASIC_AUTH_PASS = "one123";
 
-// Decode "Basic base64(user:pass)" using Web API (Edge-compatible)
+// Decode "Basic base64(user:pass)" in both Edge & Node runtimes
 function getBasicAuth(req: NextRequest) {
   const auth = req.headers.get("authorization");
   if (!auth || !auth.startsWith("Basic ")) return null;
 
-  const base64 = auth.split(" ")[1] || "";
+  const base64 = auth.slice("Basic ".length).trim();
+  let decoded = "";
+
   try {
-    const decoded = atob(base64); // Edge runtime has `atob`
-    const [user, pass] = decoded.split(":");
-    return { user, pass };
+    // Edge runtime (and many browsers)
+    if (typeof atob === "function") {
+      decoded = atob(base64);
+    }
+    // Node runtime fallback (dev/server)
+    else if (typeof Buffer !== "undefined") {
+      decoded = Buffer.from(base64, "base64").toString("utf8");
+    } else {
+      return null;
+    }
   } catch {
     return null;
   }
+
+  const [user, pass] = decoded.split(":");
+  if (!user || pass === undefined) return null;
+  return { user, pass };
 }
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // -------- Locale header (your existing logic) --------
+  // ---------- Locale header (your original logic) ----------
   const isAr = pathname === "/ar" || pathname.startsWith("/ar/");
   const requestHeaders = new Headers(req.headers);
   requestHeaders.set("x-locale", isAr ? "ar" : "en");
 
-  // -------- Basic Auth “.htaccess style” --------
+  // ---------- Decide what to protect ----------
 
-  // Do NOT protect login or obvious non-page routes
+  // Don’t protect login or static/next assets
   const isUnprotected =
     pathname.startsWith("/login") ||
     pathname.startsWith("/api") ||
@@ -38,7 +53,7 @@ export function middleware(req: NextRequest) {
     pathname.startsWith("/favicon") ||
     pathname.startsWith("/public");
 
-  // Routes that live in your (shell) group and should be behind the password
+  // These are your app/(shell) pages that should be behind the password
   const protectedPrefixes = [
     "/landing",
     "/dashboard",
@@ -52,14 +67,15 @@ export function middleware(req: NextRequest) {
   ];
 
   const shouldProtect = protectedPrefixes.some(
-    (prefix) => pathname === prefix || pathname.startsWith(prefix + "/"),
+    (prefix) => pathname === prefix || pathname.startsWith(prefix + "/")
   );
 
-  // If not a protected route → just pass through with locale header
+  // If route is not protected OR is explicitly unprotected, just pass through
   if (!shouldProtect || isUnprotected) {
     return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
+  // ---------- Basic Auth check ----------
   const credentials = getBasicAuth(req);
 
   if (
@@ -67,7 +83,7 @@ export function middleware(req: NextRequest) {
     credentials.user !== BASIC_AUTH_USER ||
     credentials.pass !== BASIC_AUTH_PASS
   ) {
-    // Wrong / missing creds → browser shows basic-auth popup
+    // Wrong/missing creds → browser shows Basic Auth popup (like .htaccess)
     return new NextResponse("Authentication required", {
       status: 401,
       headers: {
@@ -76,14 +92,14 @@ export function middleware(req: NextRequest) {
     });
   }
 
-  // Correct creds → allow through, still passing locale header
+  // Correct creds → allow through
   return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
-// Make middleware run on the routes we care about
+// Make middleware run on all relevant paths
 export const config = {
   matcher: [
-    "/",              // still want locale on home
+    "/",              // keep locale header on home
     "/about",
     "/founder",
     "/vision",
@@ -100,6 +116,6 @@ export const config = {
     "/actions/:path*",
     "/myhr/:path*",
 
-    "/login", // so locale header still applies, but we skip auth inside
+    "/login", // still want locale on login but we skip auth inside
   ],
 };
