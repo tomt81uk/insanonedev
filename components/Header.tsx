@@ -34,7 +34,9 @@ export default function Header({
     const onClick = (e: MouseEvent) => {
       if (!menuRef.current || !btnRef.current) return;
       const t = e.target as Node;
-      if (!menuRef.current.contains(t) && !btnRef.current.contains(t)) setOpen(false);
+      if (!menuRef.current.contains(t) && !btnRef.current.contains(t)) {
+        setOpen(false);
+      }
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onClick);
@@ -53,11 +55,14 @@ export default function Header({
       dir="ltr"
       // Expose header height for layout calc: --header-h (match CSS default if you change h-14)
       style={{ ["--header-h" as any]: "56px" }}
-      className="h-14 border-b border-[var(--border)] bg-[color:var(--background)]/90
+      className="relative z-40 h-14 border-b border-[var(--border)] 
+                 bg-[color:var(--background)]/90
                  backdrop-blur supports-[backdrop-filter]:bg-[color:var(--background)]/70
                  shadow-sm"
     >
-      <a href="#main" className="skip-link">Skip to main content</a>
+      <a href="#main" className="skip-link">
+        Skip to main content
+      </a>
 
       <div className="mx-auto max-w-5xl h-full px-4 flex items-center justify-between">
         <Link href={homeHref} className="flex items-center gap-2 no-underline">
@@ -85,7 +90,8 @@ export default function Header({
             <div
               ref={menuRef}
               id="primary-menu"
-              className="absolute right-0 top-[calc(100%+0.5rem)] w-72 rounded-xl border border-[var(--border)]
+              className="absolute z-50 right-0 top-[calc(100%+0.5rem)] w-72 rounded-xl
+                         border border-[var(--border)]
                          bg-[var(--background)] shadow-lg p-3 space-y-3"
               role="dialog"
               aria-label="Site menu"
