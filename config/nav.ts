@@ -2,14 +2,14 @@
 export type Locale = "en" | "ar";
 
 // Single source of truth for tabs (order matters)
-export const NAV_TABS = ["home", "about"] as const;
+export const NAV_TABS = ["home", "dashboard"] as const;
 export type Tab = (typeof NAV_TABS)[number];
 
 export type Labels = Record<Tab | "openMenu", string>;
 
 export const buildLabels = (locale: Locale, dict?: any): Labels => ({
   home: dict?.nav?.home ?? (locale === "ar" ? "الرئيسية" : "Home"),
-  about: dict?.nav?.about ?? (locale === "ar" ? "حول" : "About"),
+  about: dict?.nav?.about ?? (locale === "ar" ? "حول" : "Dashboard"),
   openMenu: dict?.nav?.openMenu ?? (locale === "ar" ? "القائمة" : "Menu"),
 });
 
