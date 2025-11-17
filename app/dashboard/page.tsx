@@ -1,6 +1,5 @@
 import { headers } from "next/headers";
 import Link from "next/link";
-import InsanOneWordmarkText from "@/components/InsanOneWordmarkText";
 import { getDict } from "@/lib/i18n";
 
 import type { LucideIcon } from "lucide-react";
@@ -170,14 +169,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-dvh bg-slate-50 text-slate-900 flex flex-col">
 
-      {/* ✔ Standard header (no centered insanPAY) */}
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-4 py-4 content-reset flex items-center gap-4">
-          <Link href={base} aria-label="Home" className="no-underline">
-            <InsanOneWordmarkText text={dict?.site?.site ?? "insanONE"} />
-          </Link>
-        </div>
-      </header>
+      {/* ✔ NO HEADER AT ALL */}
 
       <main className="mx-auto max-w-7xl flex-1 px-4 py-8 md:py-12">
 
