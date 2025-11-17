@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import HeaderBar from "@/components/HeaderBar";
+import type { LucideIcon } from "lucide-react";
 import {
   Users,
   Calculator,
@@ -27,7 +27,7 @@ type Item = {
   title: string;
   desc: string;
   href: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
 };
 
 const items: Item[] = [
@@ -137,72 +137,90 @@ export default function PayrollMenuPage() {
   }, [q]);
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900">
-      {/* Top bar with nav: Dashboard / HR / Payroll / Actions */}
-      <HeaderBar active="Payroll" />
+    <section className="mx-auto max-w-7xl px-4 py-8 md:py-12">
+      {/* Heading */}
+      <header className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">
+          Payroll
+        </h1>
+        <p className="mt-2 text-[var(--muted)]">
+          One Platform. One Workforce. One Future.
+        </p>
+      </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 md:py-12">
-        <header className="mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">
-            Payroll
-          </h1>
-          <p className="mt-2 text-slate-600">
-            One Platform. One Workforce. One Future.
-          </p>
-        </header>
-
-        {/* Search */}
-        <div className="mb-6">
-          <label htmlFor="search" className="sr-only">
-            Search payroll tools
-          </label>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-            <input
-              id="search"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search payroll…"
-              className="w-full rounded-2xl border border-slate-300 bg-white pl-10 pr-4 py-2.5 text-base text-slate-900 placeholder-slate-500 outline-none focus:ring-4 focus:ring-[#335784]/20 focus:border-[#335784]"
-            />
-          </div>
+      {/* Search */}
+      <div className="mb-6">
+        <label htmlFor="search" className="sr-only">
+          Search payroll tools
+        </label>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted)]" />
+          <input
+            id="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search payroll…"
+            className="
+              w-full rounded-2xl pl-10 pr-4 py-2.5 text-base
+              bg-[var(--background)] text-[var(--foreground)]
+              border border-[var(--border)]
+              placeholder-[var(--muted)]
+              outline-none focus:ring-2 focus:ring-[var(--focus)]
+            "
+          />
         </div>
+      </div>
 
-        {/* Grid */}
-        {filtered.length === 0 ? (
-          <p className="text-slate-600">
-            No payroll tools match “{q}”.
-          </p>
-        ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-            {filtered.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md focus:outline-none focus-visible:ring-4 focus-visible:ring-[#335784]/20"
-                >
-                  <div className="flex items-start gap-4">
-                    <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784]">
-                      <item.icon className="h-6 w-6" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="truncate text-lg font-semibold">
-                          {item.title}
-                        </h3>
-                        <ChevronRight className="h-4 w-4 text-slate-400 opacity-0 transition group-hover:opacity-100" />
-                      </div>
-                      <p className="mt-1 line-clamp-2 text-sm text-slate-600">
-                        {item.desc}
-                      </p>
+      {/* Grid */}
+      {filtered.length === 0 ? (
+        <p className="text-[var(--muted)]">
+          No payroll tools match “{q}”.
+        </p>
+      ) : (
+        <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 auto-rows-fr">
+          {filtered.map((item) => (
+            <li key={item.href} className="h-full">
+              <Link
+                href={item.href}
+                className="
+                  group block h-full rounded-2xl border border-[var(--border)]
+                  bg-[var(--background-alt)] p-5 shadow-sm
+                  transition hover:shadow-md hover:border-[var(--focus)]
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+                "
+              >
+                <div className="flex items-start gap-4">
+                  <span
+                    className="
+                      inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl
+                      border border-[var(--brand)] text-[var(--brand)]
+                      bg-[var(--background)]
+                    "
+                  >
+                    <item.icon className="h-6 w-6" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="truncate text-lg font-semibold">
+                        {item.title}
+                      </h3>
+                      <ChevronRight
+                        className="
+                          h-4 w-4 text-[var(--muted)]
+                          opacity-0 transition group-hover:opacity-100
+                        "
+                      />
                     </div>
+                    <p className="mt-1 line-clamp-2 text-sm text-[var(--muted)]">
+                      {item.desc}
+                    </p>
                   </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </main>
-    </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }

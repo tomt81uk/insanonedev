@@ -3,7 +3,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import HeaderBar from "@/components/HeaderBar";
+import type { LucideIcon } from "lucide-react";
 import {
   BarChart3,
   PieChart,
@@ -24,15 +24,7 @@ type Report = {
   title: string;
   desc: string;
   href: string;
-  icon:
-    | typeof BarChart3
-    | typeof PieChart
-    | typeof LineChart
-    | typeof FileSpreadsheet
-    | typeof Users
-    | typeof Banknote
-    | typeof ShieldCheck
-    | typeof CalendarClock;
+  icon: LucideIcon;
   tags: ReportTag[];
   schedule?: "Ad hoc" | "Daily" | "Weekly" | "Monthly";
 };
@@ -119,7 +111,13 @@ export default function ReportingPage() {
     []
   );
 
-  const TAGS: (ReportTag | "All")[] = ["All", "HR", "Payroll", "Compliance", "Time"];
+  const TAGS: (ReportTag | "All")[] = [
+    "All",
+    "HR",
+    "Payroll",
+    "Compliance",
+    "Time",
+  ];
 
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -136,227 +134,339 @@ export default function ReportingPage() {
   }, [q, activeTag, REPORTS]);
 
   const RECENT_RUNS = [
-    { id: 1, name: "Compliance Expiries", when: "Today 08:10", status: "ok" as const, format: "CSV", by: "Scheduler" },
-    { id: 2, name: "Payroll Summary", when: "Yesterday 18:02", status: "warn" as const, format: "XLSX", by: "Finance Ops" },
-    { id: 3, name: "Leave Balances", when: "Yesterday 09:31", status: "ok" as const, format: "CSV", by: "Scheduler" },
-    { id: 4, name: "Data Quality Issues", when: "Mon 11:47", status: "fail" as const, format: "CSV", by: "HR Admin" },
+    {
+      id: 1,
+      name: "Compliance Expiries",
+      when: "Today 08:10",
+      status: "ok" as const,
+      format: "CSV",
+      by: "Scheduler",
+    },
+    {
+      id: 2,
+      name: "Payroll Summary",
+      when: "Yesterday 18:02",
+      status: "warn" as const,
+      format: "XLSX",
+      by: "Finance Ops",
+    },
+    {
+      id: 3,
+      name: "Leave Balances",
+      when: "Yesterday 09:31",
+      status: "ok" as const,
+      format: "CSV",
+      by: "Scheduler",
+    },
+    {
+      id: 4,
+      name: "Data Quality Issues",
+      when: "Mon 11:47",
+      status: "fail" as const,
+      format: "CSV",
+      by: "HR Admin",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-white text-[#0a1a3a] flex flex-col">
-      <HeaderBar />
+    <section className="mx-auto max-w-6xl px-4 sm:px-6 py-8 md:py-10">
+      {/* Heading */}
+      <header className="flex items-end justify-between gap-4 flex-wrap">
+        <div className="space-y-2">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
+            Reporting
+          </h1>
+          <p className="text-[var(--muted)]">
+            Run ad-hoc reports, view scheduled outputs, and export data.
+          </p>
+        </div>
 
-      <main className="flex-1 px-6 py-12">
-        <div className="mx-auto max-w-6xl">
-          {/* Heading */}
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Reporting</h1>
-              <p className="text-gray-600">
-                Run ad-hoc reports, view scheduled outputs, and export data.
-              </p>
-            </div>
-
-            {/* Search */}
-            <div className="w-full sm:w-96">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="report-search">
-                Search
-              </label>
-              <div className="relative">
-                <input
-                  id="report-search"
-                  type="search"
-                  placeholder="Search reports…"
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  className="w-full rounded-xl border border-gray-300 px-4 py-3 pr-10 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2f6fed]"
-                />
-                <Filter className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" aria-hidden />
-              </div>
-            </div>
-          </div>
-
-          {/* Tag filter chips */}
-          <div className="mt-6 flex flex-wrap gap-2">
-            {TAGS.map((t) => {
-              const active = activeTag === t;
-              return (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => setActiveTag(t)}
-                  className={[
-                    "rounded-full border px-3 py-1 text-sm transition",
-                    active
-                      ? "border-[#2f6fed] text-[#2f6fed] bg-[#2f6fed]/5"
-                      : "border-gray-200 text-gray-700 hover:bg-gray-50",
-                  ].join(" ")}
-                  aria-pressed={active}
-                >
-                  {t}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Quick actions */}
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            <Link
-              href="/reporting/new"
-              className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 focus-visible:ring-4 focus-visible:ring-[#2f6fed]/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#335784]/10 text-[#335784]">
-                  <FileSpreadsheet className="h-4 w-4" aria-hidden />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold">New ad-hoc export</div>
-                  <div className="text-xs text-gray-600">Pick fields, filters, and format.</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link
-              href="/reporting/schedules"
-              className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 focus-visible:ring-4 focus-visible:ring-[#2f6fed]/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#335784]/10 text-[#335784]">
-                  <CalendarClock className="h-4 w-4" aria-hidden />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold">Schedules</div>
-                  <div className="text-xs text-gray-600">Manage automated report runs.</div>
-                </div>
-              </div>
-            </Link>
-
-            <Link
-              href="/reporting/data-dictionary"
-              className="rounded-xl border border-gray-200 p-4 hover:bg-gray-50 focus-visible:ring-4 focus-visible:ring-[#2f6fed]/20"
-            >
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#335784]/10 text-[#335784]">
-                  <Download className="h-4 w-4" aria-hidden />
-                </span>
-                <div>
-                  <div className="text-sm font-semibold">Data dictionary</div>
-                  <div className="text-xs text-gray-600">Fields, tables, and definitions.</div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          {/* Report catalog */}
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((r) => (
-              <Link
-                key={r.slug}
-                href={r.href}
-                className="group rounded-2xl border border-gray-200 p-5 hover:bg-gray-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#2f6fed]/20"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] shrink-0">
-                    <r.icon className="h-5 w-5" aria-hidden />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="text-base font-semibold truncate">{r.title}</div>
-                    <div className="text-sm text-gray-600">{r.desc}</div>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {r.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="inline-flex items-center rounded-full border border-gray-200 px-2 py-0.5 text-xs text-gray-700"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                      {r.schedule && (
-                        <span className="inline-flex items-center rounded-full border border-gray-200 px-2 py-0.5 text-xs text-gray-700">
-                          {r.schedule}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Recent runs */}
-          <div className="mt-12">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold tracking-tight">Recent runs</h2>
-              <Link
-                href="/reporting/history"
-                className="text-sm text-[#2f6fed] hover:underline"
-              >
-                View history
-              </Link>
-            </div>
-
-            <div className="mt-4 overflow-hidden rounded-xl border border-gray-200">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50 text-gray-600">
-                  <tr>
-                    <th className="text-left font-medium px-4 py-3">Report</th>
-                    <th className="text-left font-medium px-4 py-3">When</th>
-                    <th className="text-left font-medium px-4 py-3">By</th>
-                    <th className="text-left font-medium px-4 py-3">Format</th>
-                    <th className="text-left font-medium px-4 py-3">Status</th>
-                    <th className="text-right font-medium px-4 py-3">Output</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {RECENT_RUNS.map((r) => (
-                    <tr key={r.id} className="bg-white">
-                      <td className="px-4 py-3">{r.name}</td>
-                      <td className="px-4 py-3 text-gray-700">{r.when}</td>
-                      <td className="px-4 py-3 text-gray-700">{r.by}</td>
-                      <td className="px-4 py-3 text-gray-700">{r.format}</td>
-                      <td className="px-4 py-3">
-                        <span className="inline-flex items-center gap-2">
-                          <span
-                            className={[
-                              "inline-block h-2.5 w-2.5 rounded-full",
-                              r.status === "ok"
-                                ? "bg-emerald-500"
-                                : r.status === "warn"
-                                ? "bg-amber-500"
-                                : "bg-rose-500",
-                            ].join(" ")}
-                            aria-hidden
-                          />
-                          <span className="text-gray-700">
-                            {r.status === "ok" ? "Success" : r.status === "warn" ? "Warnings" : "Failed"}
-                          </span>
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <Link
-                          href="#"
-                          className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-1.5 text-sm hover:bg-gray-50"
-                        >
-                          <Download className="h-4 w-4" aria-hidden />
-                          Download
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Footer tagline */}
-          <div className="mt-12 text-center">
-            <p className="text-sm font-medium">Human. Innovation. Simplicity.</p>
-            <p className="text-xs text-gray-600 mt-1">
-              © 2025 insanONE. No unauthorised access.
-            </p>
+        {/* Search */}
+        <div className="w-full sm:w-96">
+          <label
+            className="block text-sm font-medium text-[var(--foreground)] mb-1"
+            htmlFor="report-search"
+          >
+            Search
+          </label>
+          <div className="relative">
+            <input
+              id="report-search"
+              type="search"
+              placeholder="Search reports…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              className="
+                w-full rounded-xl px-4 py-3 pr-10
+                bg-[var(--background)] text-[var(--foreground)]
+                border border-[var(--border)]
+                placeholder-[var(--muted)]
+                focus:outline-none focus:ring-2 focus:ring-[var(--focus)]
+              "
+            />
+            <Filter
+              className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted)]"
+              aria-hidden
+            />
           </div>
         </div>
-      </main>
-    </div>
+      </header>
+
+      {/* Tag filter chips */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        {TAGS.map((t) => {
+          const active = activeTag === t;
+          return (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setActiveTag(t)}
+              className={[
+                "rounded-full border px-3 py-1 text-sm transition",
+                active
+                  ? "border-[var(--brand)] text-[var(--brand)] bg-[var(--brand)]/10"
+                  : "border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--background-alt)]",
+              ].join(" ")}
+              aria-pressed={active}
+            >
+              {t}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Quick actions */}
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <Link
+          href="/reporting/new"
+          className="
+            rounded-xl border border-[var(--border)]
+            bg-[var(--background-alt)] p-4
+            hover:bg-[var(--background)] focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+          "
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="
+                inline-flex h-9 w-9 items-center justify-center rounded-lg
+                bg-[var(--brand)]/10 text-[var(--brand)]
+              "
+            >
+              <FileSpreadsheet className="h-4 w-4" aria-hidden />
+            </span>
+            <div>
+              <div className="text-sm font-semibold">New ad-hoc export</div>
+              <div className="text-xs text-[var(--muted)]">
+                Pick fields, filters, and format.
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          href="/reporting/schedules"
+          className="
+            rounded-xl border border-[var(--border)]
+            bg-[var(--background-alt)] p-4
+            hover:bg-[var(--background)] focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+          "
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="
+                inline-flex h-9 w-9 items-center justify-center rounded-lg
+                bg-[var(--brand)]/10 text-[var(--brand)]
+              "
+            >
+              <CalendarClock className="h-4 w-4" aria-hidden />
+            </span>
+            <div>
+              <div className="text-sm font-semibold">Schedules</div>
+              <div className="text-xs text-[var(--muted)]">
+                Manage automated report runs.
+              </div>
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          href="/reporting/data-dictionary"
+          className="
+            rounded-xl border border-[var(--border)]
+            bg-[var(--background-alt)] p-4
+            hover:bg-[var(--background)] focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+          "
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="
+                inline-flex h-9 w-9 items-center justify-center rounded-lg
+                bg-[var(--brand)]/10 text-[var(--brand)]
+              "
+            >
+              <Download className="h-4 w-4" aria-hidden />
+            </span>
+            <div>
+              <div className="text-sm font-semibold">Data dictionary</div>
+              <div className="text-xs text-[var(--muted)]">
+                Fields, tables, and definitions.
+              </div>
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* Report catalog */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {filtered.map((r) => (
+          <Link
+            key={r.slug}
+            href={r.href}
+            className="
+              group rounded-2xl border border-[var(--border)]
+              bg-[var(--background-alt)] p-5
+              hover:bg-[var(--background)] focus:outline-none
+              focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+            "
+          >
+            <div className="flex items-start gap-3">
+              <span
+                className="
+                  inline-flex h-10 w-10 items-center justify-center rounded-xl
+                  bg-[var(--brand)]/10 text-[var(--brand)] shrink-0
+                "
+              >
+                <r.icon className="h-5 w-5" aria-hidden />
+              </span>
+              <div className="min-w-0">
+                <div className="text-base font-semibold truncate">
+                  {r.title}
+                </div>
+                <div className="text-sm text-[var(--muted)]">
+                  {r.desc}
+                </div>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {r.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="
+                        inline-flex items-center rounded-full border border-[var(--border)]
+                        px-2 py-0.5 text-xs text-[var(--foreground)]
+                      "
+                    >
+                      {t}
+                    </span>
+                  ))}
+                  {r.schedule && (
+                    <span
+                      className="
+                        inline-flex items-center rounded-full border border-[var(--border)]
+                        px-2 py-0.5 text-xs text-[var(--foreground)]
+                      "
+                    >
+                      {r.schedule}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* Recent runs */}
+      <div className="mt-12">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold tracking-tight">
+            Recent runs
+          </h2>
+          <Link
+            href="/reporting/history"
+            className="text-sm text-[var(--brand)] hover:underline"
+          >
+            View history
+          </Link>
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--background-alt)]">
+          <table className="w-full text-sm">
+            <thead className="bg-[var(--background)] text-[var(--muted)]">
+              <tr>
+                <th className="text-left font-medium px-4 py-3">
+                  Report
+                </th>
+                <th className="text-left font-medium px-4 py-3">
+                  When
+                </th>
+                <th className="text-left font-medium px-4 py-3">
+                  By
+                </th>
+                <th className="text-left font-medium px-4 py-3">
+                  Format
+                </th>
+                <th className="text-left font-medium px-4 py-3">
+                  Status
+                </th>
+                <th className="text-right font-medium px-4 py-3">
+                  Output
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[var(--border)]">
+              {RECENT_RUNS.map((r) => (
+                <tr key={r.id} className="bg-[var(--background-alt)]">
+                  <td className="px-4 py-3">{r.name}</td>
+                  <td className="px-4 py-3 text-[var(--foreground)]">
+                    {r.when}
+                  </td>
+                  <td className="px-4 py-3 text-[var(--foreground)]">
+                    {r.by}
+                  </td>
+                  <td className="px-4 py-3 text-[var(--foreground)]">
+                    {r.format}
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="inline-flex items-center gap-2">
+                      <span
+                        className={[
+                          "inline-block h-2.5 w-2.5 rounded-full",
+                          r.status === "ok"
+                            ? "bg-emerald-500"
+                            : r.status === "warn"
+                            ? "bg-amber-500"
+                            : "bg-rose-500",
+                        ].join(" ")}
+                        aria-hidden
+                      />
+                      <span className="text-[var(--foreground)]">
+                        {r.status === "ok"
+                          ? "Success"
+                          : r.status === "warn"
+                          ? "Warnings"
+                          : "Failed"}
+                      </span>
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href="#"
+                      className="
+                        inline-flex items-center gap-2 rounded-lg
+                        border border-[var(--border)]
+                        bg-[var(--background)] px-3 py-1.5 text-sm
+                        hover:bg-[var(--background-alt)]
+                      "
+                    >
+                      <Download className="h-4 w-4" aria-hidden />
+                      Download
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   );
 }
