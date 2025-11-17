@@ -1,9 +1,7 @@
-// app/admin/page.tsx
 "use client";
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import HeaderBar from "@/components/HeaderBar";
 import {
   Settings,
   SlidersHorizontal,
@@ -172,71 +170,79 @@ export default function AdminSetupMenuPage() {
   }, [q, CARDS]);
 
   return (
-    <div className="min-h-screen bg-white text-[#0a1a3a] flex flex-col">
-      <HeaderBar />
+    <section className="mx-auto max-w-6xl px-6 py-12">
 
-      <main className="flex-1 px-6 py-12">
-        <div className="mx-auto max-w-6xl">
-          {/* Heading */}
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
-                Admin Setup / Background
-              </h1>
-              <p className="text-gray-600">
-                Configure reference data, workflows, and system behavior.
-              </p>
-            </div>
-
-            {/* Search */}
-            <div className="w-full sm:w-80">
-              <label
-                className="block text-sm font-medium text-gray-700 mb-1"
-                htmlFor="admin-search"
-              >
-                Search
-              </label>
-              <input
-                id="admin-search"
-                type="search"
-                placeholder="Search setup…"
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                className="w-full rounded-xl border border-gray-300 px-4 py-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2f6fed]"
-              />
-            </div>
-          </div>
-
-          {/* Grid */}
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((c) => (
-              <Link
-                key={c.title}
-                href={c.href}
-                className="group rounded-2xl border border-gray-200 p-5 hover:bg-gray-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#2f6fed]/20"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784]">
-                    <c.icon className="h-5 w-5" aria-hidden />
-                  </span>
-                  <div>
-                    <div className="text-base font-semibold">{c.title}</div>
-                    <div className="text-sm text-gray-600">{c.desc}</div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Footer tagline */}
-          <div className="mt-12 text-center">
-            <p className="text-sm font-medium">Human. Innovation. Simplicity.</p>
-            <p className="text-xs text-gray-600 mt-1">
-              © 2025 insanONE. No unauthorised access.
-            </p>
-          </div>
+      {/* Heading + Search */}
+      <div className="flex items-end justify-between gap-4 flex-wrap">
+        <div className="space-y-2">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
+            Admin Setup / Background
+          </h1>
+          <p className="text-[var(--muted)]">
+            Configure reference data, workflows, and system behavior.
+          </p>
         </div>
-      </main>
-    </div>
+
+        <div className="w-full sm:w-80">
+          <label
+            className="block text-sm font-medium text-[var(--foreground)] mb-1"
+            htmlFor="admin-search"
+          >
+            Search
+          </label>
+
+          <input
+            id="admin-search"
+            type="search"
+            placeholder="Search setup…"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="
+              w-full rounded-xl px-4 py-3
+              bg-[var(--background)] text-[var(--foreground)]
+              border border-[var(--border)]
+              placeholder-[var(--muted)]
+              focus:outline-none focus:ring-2 focus:ring-[var(--focus)]
+            "
+          />
+        </div>
+      </div>
+
+      {/* Cards grid */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+        {filtered.map((c) => (
+          <Link
+            key={c.title}
+            href={c.href}
+            className="
+              group block h-full rounded-2xl border border-[var(--border)]
+              bg-[var(--background-alt)] p-5 shadow-sm
+              transition hover:shadow-md hover:border-[var(--focus)]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]
+            "
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className="
+                  inline-flex h-10 w-10 items-center justify-center rounded-xl
+                  border border-[var(--brand)] text-[var(--brand)]
+                  bg-[var(--background)]
+                  transition group-hover:border-[var(--brand-strong)]
+                "
+              >
+                <c.icon className="h-5 w-5" aria-hidden />
+              </span>
+
+              <div>
+                <div className="text-base font-semibold">{c.title}</div>
+                <div className="text-sm text-[var(--muted)]">{c.desc}</div>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* No footer tagline — real footer handled by RootLayout */}
+    </section>
   );
 }
