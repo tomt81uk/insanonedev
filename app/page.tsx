@@ -7,22 +7,37 @@ import { getDict } from "@/lib/i18n";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  // Next 15+: headers() is async
   const hdrs = await headers();
   const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
   const dict: any = getDict(locale);
   const base = locale === "ar" ? "/ar" : "/";
 
+  // helper to prefix internal routes with /ar
+  const withBase = (href?: string) => {
+    if (!href) return "#";
+    if (href.startsWith("http")) return href; // external
+    // ensure single slash join
+    const path = href.startsWith("/") ? href : `/${href}`;
+    return base === "/" ? path : `${base}${path}`;
+  };
+
+  const contactHref = withBase(dict?.site?.ctaContactHref);
+  const followHref = withBase(dict?.site?.ctaFollowHref);
+
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16 text-center space-y-6 content-reset">
+    <section
+      className="mx-auto max-w-5xl px-4 py-16 text-center space-y-6 content-reset"
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      lang={locale}
+    >
       <Link
         href={base}
-        aria-label={dict?.site?.site ? `${dict.site.site} Home` : "insanPAY Home"}
+        aria-label={dict?.site?.title ? `${dict.site.title} Home` : "insanONE Home"}
         className="block mx-auto no-underline"
       >
         <InsanOneWordmarkText
-          text={dict?.site?.site ?? "insanPAY"}
+          text={dict?.site?.title ?? "insanONE"}
           className="mx-auto"
         />
       </Link>
@@ -35,14 +50,13 @@ export default async function HomePage() {
         {dict?.site?.tagline2}
       </p>
 
-      {/* Single centered CTA – green accent */}
-      <div className="pt-8">
-        <a
-          href="https://insan.one"
-          className="btn inline-block text-lg font-medium rounded-2xl bg-[var(--accent-green)] text-white shadow hover:shadow-md transition"
-        >
-          insanONE
-        </a>
+      <div className="flex items-center justify-center gap-3 pt-4">
+        <Link className="btn" href={contactHref}>
+          {dict?.site?.ctaContact ?? "Contact Us"}
+        </Link>
+        <Link className="btn-outline" href={followHref}>
+          {dict?.site?.ctaFollow ?? "Follow Updates"}
+        </Link>
       </div>
     </section>
   );

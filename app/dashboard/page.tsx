@@ -1,6 +1,6 @@
+// app/app/dashboard/page.tsx
 import { headers } from "next/headers";
 import Link from "next/link";
-import { getDict } from "@/lib/i18n";
 
 import type { LucideIcon } from "lucide-react";
 import {
@@ -156,7 +156,6 @@ export default async function DashboardPage() {
   const hdrs = await headers();
   const hdrLocale = hdrs.get("x-locale");
   const locale: "en" | "ar" = hdrLocale === "ar" ? "ar" : "en";
-  const dict: any = getDict(locale);
   const base = locale === "ar" ? "/ar" : "/";
 
   const withBase = (href?: string) => {
@@ -167,18 +166,16 @@ export default async function DashboardPage() {
   };
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-dvh flex flex-col bg-[var(--background)] text-[var(--foreground)]">
+      {/* No header – page starts at Dashboard */}
 
-      {/* ✔ NO HEADER AT ALL */}
-
-      <main className="mx-auto max-w-7xl flex-1 px-4 py-8 md:py-12">
-
+      <main className="mx-auto max-w-7xl flex-1 px-4 py-8 md:py-12 content-reset">
         {/* Heading */}
         <header className="mb-6 md:mb-8">
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
             Dashboard
           </h1>
-          <p className="mt-1 text-slate-600">
+          <p className="mt-1 text-[var(--muted)]">
             At a glance across HR &amp; Payroll.
           </p>
         </header>
@@ -189,22 +186,22 @@ export default async function DashboardPage() {
             <Link
               key={m.title}
               href={withBase(m.href)}
-              className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-slate-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#335784]/20"
+              className="group rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
             >
               <div className="flex items-start justify-between gap-2">
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
+                <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                   <m.icon className="h-5 w-5" aria-hidden />
                 </div>
 
                 <span
                   className={[
-                    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs",
+                    "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs border",
                     m.trend === "up" &&
-                      "bg-green-50 text-green-700 ring-1 ring-green-200",
+                      "bg-emerald-50 text-emerald-700 border-emerald-200",
                     m.trend === "down" &&
-                      "bg-red-50 text-red-700 ring-1 ring-red-200",
+                      "bg-red-50 text-red-700 border-red-200",
                     m.trend === "flat" &&
-                      "bg-slate-50 text-slate-600 ring-slate-200 ring-1",
+                      "bg-[var(--background)] text-[var(--muted)] border-[var(--border)]",
                   ]
                     .filter(Boolean)
                     .join(" ")}
@@ -220,10 +217,12 @@ export default async function DashboardPage() {
               </div>
 
               <div className="mt-4 text-3xl font-semibold">{m.value}</div>
-              <div className="mt-1 text-sm text-slate-600">{m.title}</div>
+              <div className="mt-1 text-sm text-[var(--muted)]">
+                {m.title}
+              </div>
 
               <ChevronRight
-                className="mt-4 h-5 w-5 text-slate-400 opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0"
+                className="mt-4 h-5 w-5 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0"
                 aria-hidden
               />
             </Link>
@@ -232,16 +231,18 @@ export default async function DashboardPage() {
 
         {/* Main grid */}
         <section className="mt-8 grid gap-4 lg:grid-cols-3">
-          {/* Payroll */}
-          <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          {/* Payroll card */}
+          <div className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                   <Banknote className="h-5 w-5" aria-hidden />
                 </span>
                 <div>
-                  <h2 className="text-lg font-semibold">This Month’s Payroll</h2>
-                  <p className="text-sm text-slate-600">
+                  <h2 className="text-lg font-semibold">
+                    This Month’s Payroll
+                  </h2>
+                  <p className="text-sm text-[var(--muted)]">
                     Cycle: Jan 2025 — Status:{" "}
                     <span className="font-medium">Draft</span>
                   </p>
@@ -251,42 +252,43 @@ export default async function DashboardPage() {
               <div className="flex items-center gap-2">
                 <Link
                   href={withBase("/app/payroll")}
-                  className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm hover:bg-slate-50"
+                  className="rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm hover:bg-[var(--background-alt)]"
                 >
                   Open payroll
                 </Link>
                 <Link
                   href={withBase("/app/reports")}
-                  className="rounded-xl bg-[#335784] px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+                  className="rounded-xl bg-[var(--brand)] px-3 py-2 text-sm font-medium text-[var(--on-brand)] hover:opacity-90"
                 >
                   View reports
                 </Link>
               </div>
             </div>
 
+            {/* Progress */}
             <div className="mt-4">
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-xs text-[var(--muted)]">
                 <span>Preparation</span>
                 <span>68%</span>
               </div>
 
-              <div className="mt-1 h-2 w-full rounded-full bg-slate-200">
-                <div className="h-2 w-[68%] rounded-full bg-[#335784]" />
+              <div className="mt-1 h-2 w-full rounded-full bg-[var(--background)]">
+                <div className="h-2 w-[68%] rounded-full bg-[var(--brand)]" />
               </div>
 
               <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-                <div className="rounded-lg border border-slate-200 p-3">
-                  <dt className="text-slate-600">Employees</dt>
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
+                  <dt className="text-[var(--muted)]">Employees</dt>
                   <dd className="mt-0.5 text-base font-semibold">148</dd>
                 </div>
 
-                <div className="rounded-lg border border-slate-200 p-3">
-                  <dt className="text-slate-600">Forecast Cost</dt>
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
+                  <dt className="text-[var(--muted)]">Forecast Cost</dt>
                   <dd className="mt-0.5 text-base font-semibold">£612,450</dd>
                 </div>
 
-                <div className="rounded-lg border border-slate-200 p-3">
-                  <dt className="text-slate-600">Cutoff</dt>
+                <div className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3">
+                  <dt className="text-[var(--muted)]">Cutoff</dt>
                   <dd className="mt-0.5 text-base font-semibold">in 4 days</dd>
                 </div>
               </dl>
@@ -294,20 +296,20 @@ export default async function DashboardPage() {
           </div>
 
           {/* Approvals */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                 <CheckCircle2 className="h-5 w-5" aria-hidden />
               </span>
               <div>
                 <h2 className="text-lg font-semibold">Approvals</h2>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-[var(--muted)]">
                   Items needing your decision
                 </p>
               </div>
             </div>
 
-            <ul className="mt-4 divide-y divide-slate-200">
+            <ul className="mt-4 divide-y divide-[var(--border)]">
               {APPROVALS.map((a) => (
                 <li key={a.id}>
                   <Link
@@ -316,11 +318,11 @@ export default async function DashboardPage() {
                   >
                     <div className="min-w-0">
                       <p className="text-sm font-medium">{a.what}</p>
-                      <p className="text-xs text-slate-600">
+                      <p className="text-xs text-[var(--muted)]">
                         {a.who} • {a.when}
                       </p>
                     </div>
-                    <ChevronRight className="h-5 w-5 shrink-0 text-slate-400 opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
+                    <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
                   </Link>
                 </li>
               ))}
@@ -329,7 +331,7 @@ export default async function DashboardPage() {
             <div className="mt-3 text-right">
               <Link
                 href={withBase("/app/hr/leave/approvals")}
-                className="text-sm text-[#335784] hover:underline"
+                className="text-sm text-[var(--link)] hover:underline"
               >
                 View all
               </Link>
@@ -345,19 +347,19 @@ export default async function DashboardPage() {
               <li key={q.title}>
                 <Link
                   href={withBase(q.href)}
-                  className="group block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-slate-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#335784]/20"
+                  className="group block rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm transition hover:shadow-md hover:border-[var(--focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)]"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                       <q.icon className="h-5 w-5" aria-hidden />
                     </span>
                     <div className="min-w-0 flex-1">
                       <div className="text-base font-semibold">{q.title}</div>
-                      <div className="text-sm text-slate-600 line-clamp-1">
+                      <div className="text-sm text-[var(--muted)] line-clamp-1">
                         {q.desc}
                       </div>
                     </div>
-                    <ChevronRight className="h-5 w-5 shrink-0 text-slate-400 opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
+                    <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] opacity-0 -translate-x-1 transition group-hover:opacity-100 group-hover:translate-x-0" />
                   </div>
                 </Link>
               </li>
@@ -365,16 +367,17 @@ export default async function DashboardPage() {
           </ul>
         </section>
 
-        {/* Alerts + Activity */}
+        {/* Alerts & Activity */}
         <section className="mt-8 grid gap-4 lg:grid-cols-3">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          {/* Alerts */}
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 ring-1 ring-amber-200">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                 <ShieldAlert className="h-5 w-5" aria-hidden />
               </span>
               <div>
                 <h2 className="text-lg font-semibold">Alerts</h2>
-                <p className="text-sm text-slate-600">Things to watch</p>
+                <p className="text-sm text-[var(--muted)]">Things to watch</p>
               </div>
             </div>
 
@@ -383,7 +386,7 @@ export default async function DashboardPage() {
                 <li key={al.id}>
                   <Link
                     href={withBase(al.href)}
-                    className="block rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 hover:bg-amber-100"
+                    className="block rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--background-alt)]"
                   >
                     {al.text}
                   </Link>
@@ -392,26 +395,27 @@ export default async function DashboardPage() {
             </ul>
           </div>
 
-          <div className="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          {/* Recent activity */}
+          <div className="lg:col-span-2 rounded-2xl border border-[var(--border)] bg-[var(--background-alt)] p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#335784]/10 text-[#335784] ring-1 ring-[#335784]/20">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--brand)] text-[var(--brand)] bg-[var(--background)]">
                 <FileText className="h-5 w-5" aria-hidden />
               </span>
-              <div>
+            <div>
                 <h2 className="text-lg font-semibold">Recent Activity</h2>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-[var(--muted)]">
                   Latest changes across the system
                 </p>
               </div>
             </div>
 
-            <ul className="mt-4 divide-y divide-slate-200 text-sm">
+            <ul className="mt-4 divide-y divide-[var(--border)] text-sm">
               <li className="flex items-center justify-between py-3">
                 <span>
                   <span className="font-medium">Payroll draft</span> created for
                   Jan 2025.
                 </span>
-                <span className="text-slate-500">10:24</span>
+                <span className="text-[var(--muted)]">10:24</span>
               </li>
 
               <li className="flex items-center justify-between py-3">
@@ -419,7 +423,7 @@ export default async function DashboardPage() {
                   <span className="font-medium">Bank change</span> submitted by
                   Leo Wang.
                 </span>
-                <span className="text-slate-500">09:40</span>
+                <span className="text-[var(--muted)]">09:40</span>
               </li>
 
               <li className="flex items-center justify-between py-3">
@@ -427,7 +431,7 @@ export default async function DashboardPage() {
                   <span className="font-medium">Leave approved</span> for Zara
                   Malik (2 days).
                 </span>
-                <span className="text-slate-500">Yesterday</span>
+                <span className="text-[var(--muted)]">Yesterday</span>
               </li>
 
               <li className="flex items-center justify-between py-3">
@@ -435,7 +439,7 @@ export default async function DashboardPage() {
                   <span className="font-medium">Contract issued</span> to Maya
                   Ortega.
                 </span>
-                <span className="text-slate-500">Mon</span>
+                <span className="text-[var(--muted)]">Mon</span>
               </li>
             </ul>
           </div>
